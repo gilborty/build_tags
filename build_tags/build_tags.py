@@ -10,15 +10,16 @@ import debug_status as ds
 verbose = True
 delimiter = "/n"
 
+
 def add(in_file, tag, text):
     """
         Appends text to a file between specified tag
     """
     start_tag = tag + "_START" + '\n'
     end_tag = tag + "_END" + '\n'
-    
+
     ds.print_status(ds.INFO, "Opening file: %s" % in_file, verbose)
-    
+
     lines = text.split(delimiter)
     try:
         with open(in_file, 'a') as file:
@@ -37,8 +38,8 @@ def remove(in_file, tag):
     """
     ds.print_status(ds.INFO, "Opening file: %s" % in_file, verbose)
     lines = []
-    
-    #Get all of the lines in the file
+
+    # Get all of the lines in the file
     try:
         with open(in_file, 'r') as file:
             lines = file.readlines()
@@ -46,7 +47,7 @@ def remove(in_file, tag):
         ds.print_status(ds.FATAL_ERROR, str(e), verbose=True)
         exit()
 
-    #And delete the blocked text
+    # And delete the blocked text
     writing = True
     start_tag = tag + "_START" + '\n'
     end_tag = tag + "_END" + '\n'
@@ -66,25 +67,27 @@ def remove(in_file, tag):
         exit()
 
 if __name__ == '__main__':
-    
-    #Parse command line arguments
+
+    # Parse command line arguments
     parser = argparse.ArgumentParser()
-    #Need a file name
-    parser.add_argument('-f','--file',help='File to edit',required=True)
+    # Need a file name
+    parser.add_argument('-f', '--file', help='File to edit', required=True)
 
-    #The tag we are operating on
-    parser.add_argument('-t', '--tag',help='The tag to operate on',required=True)
+    # The tag we are operating on
+    parser.add_argument(
+        '-t', '--tag', help='The tag to operate on', required=True)
 
-    #Should we run this silently?
-    parser.add_argument('-v','--verbose', action='store_true', default=False, required=False, help="Enable debug statements")
+    # Should we run this silently?
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        default=False, required=False, help="Enable debug statements")
 
-    #Subparsers
+    # Subparsers
     subparsers = parser.add_subparsers(dest='subcommand')
-    #Add tags?
+    # Add tags?
     parser_add = subparsers.add_parser('add')
-    parser_add.add_argument('-t','--text',help='The text to be inserted')
+    parser_add.add_argument('-t', '--text', help='The text to be inserted')
 
-    #Or remove them
+    # Or remove them
     parser_remove = subparsers.add_parser('remove')
     args = parser.parse_args()
 
@@ -92,10 +95,11 @@ if __name__ == '__main__':
     ds.print_status(ds.WARNING, "Debug statements enabled", verbose)
 
     if args.subcommand == 'add':
-        ds.print_status(ds.INFO, "Adding text to file: %s with tag: %s" % (args.file, args.tag), verbose)
+        ds.print_status(ds.INFO, "Adding text to file: %s with tag: %s" % (
+            args.file, args.tag), verbose)
         text = str(args.text)
         add(args.file, args.tag, text)
     elif args.subcommand == 'remove':
-        ds.print_status(ds.INFO, "Removing text from file: %s with tag: %s" % (args.file, args.tag), verbose)
+        ds.print_status(ds.INFO, "Removing text from file: %s with tag: %s" % (
+            args.file, args.tag), verbose)
         remove(args.file, args.tag)
-                
