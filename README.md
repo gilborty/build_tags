@@ -43,7 +43,7 @@ Now, let's say we use the above **example.txt** and apend the line:
 *OROV_START*  
 *Hello world*  
 *How are you*  
-*OROV_END*
+*OROV_END*  
 *This is another line*
 
 To remove the code block, call:
